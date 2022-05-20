@@ -8,6 +8,7 @@ class BeerProjectSpringApplicationTests {
 
     @Test
     void contextLoads() {
+
     }
 
 }
