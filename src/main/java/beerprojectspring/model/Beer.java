@@ -27,12 +27,41 @@ public class Beer {
     private int price;
     private double alcohol;
 
-    @OneToMany(mappedBy = "beer", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "beer")
     private List<Ingredient> ingredients = new ArrayList<>();
-    @Transient
-    private double waterIngredient;
+//    @Transient
+//    private double waterIngredient;
 
     public Beer(String name) {
         this.name = name;
+    }
+
+    public Beer(String id, String name, String brand, String type, int price, double alcohol) {
+        this.id = id;
+        this.name = name;
+        this.brand = brand;
+        this.type = type;
+        this.price = price;
+        this.alcohol = alcohol;
+    }
+
+    public Beer(String id, String name, String brand, String type, int price, double alcohol, List<Ingredient> ingredients) {
+        this.id = id;
+        this.name = name;
+        this.brand = brand;
+        this.type = type;
+        this.price = price;
+        this.alcohol = alcohol;
+        this.ingredients = ingredients;
+    }
+
+    public void addIngredients(Ingredient ingredient) {
+        ingredients.add(ingredient);
+        ingredient.setBeer(this);
+    }
+
+    public void addIngredientsFromList(List<Ingredient> ingr) {
+        ingr.forEach(i->i.setBeer(this));
+        ingredients.addAll(ingr);
     }
 }

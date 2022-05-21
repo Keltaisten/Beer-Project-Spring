@@ -51,3 +51,8 @@ GET http://localhost:8080/api/beers/1
 Accept: application/json
 
 ###
+
+GET http://localhost:8080/api/ingredients/
+Accept: application/json
+
+###

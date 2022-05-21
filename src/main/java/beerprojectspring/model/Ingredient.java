@@ -19,6 +19,19 @@ public class Ingredient {
     private String name;
     private double ratio;
     @ManyToOne
-    @JoinColumn(name = "beer_id")
+    @JoinColumn(name = "beer_object_id")
     private Beer beer;
+
+//    @JoinColumn(name = "beer_id")
+//    private Long beerId;
+
+
+    public Ingredient(String name) {
+        this.name = name;
+    }
+
+    public Ingredient(String name, double ratio) {
+        this.name = name;
+        this.ratio = ratio;
+    }
 }
