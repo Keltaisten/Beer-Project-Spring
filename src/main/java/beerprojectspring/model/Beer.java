@@ -1,5 +1,6 @@
 package beerprojectspring.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,7 @@ public class Beer {
     private int price;
     private double alcohol;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "beer")
     private List<Ingredient> ingredients = new ArrayList<>();
 //    @Transient

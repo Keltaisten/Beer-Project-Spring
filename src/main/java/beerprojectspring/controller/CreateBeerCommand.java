@@ -7,8 +7,9 @@ import lombok.Data;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Data
@@ -23,10 +24,14 @@ public class CreateBeerCommand {
     private String brand;
     @Schema(description = "type of the beer", example = "Corn")
     private String type;
+    @Min(value = 500, message = "price can not be less than 500")
+    @Max(value = 10_000, message = "price can not be more than 10_000")
     @Schema(description = "price of the beer", example = "910")
     private int price;
+    @DecimalMax(value = "0.8",message = "alcohol can not be more than 0.8")
+    @PositiveOrZero(message = "alcohol ratio can not be negative")
     @Schema(description = "alcohol of the beer", example = "0.129")
     private double alcohol;
-    @Schema(description = "ingredients of the beer", example = "list")
+    @Schema(description = "ingredients of the beer", example = "[]")
     private List<Ingredient> ingredients = new ArrayList<>();
 }

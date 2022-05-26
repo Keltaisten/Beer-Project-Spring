@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class CreateIngredientCommand {
 
-    @Schema(description = "name of the beer", example = "Beer Sans Corn")
+    @Schema(description = "name of the ingredient", example = "corn")
     @NotBlank(message = "name can not be blank")
     private String name;
 }

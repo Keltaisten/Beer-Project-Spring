@@ -19,5 +19,5 @@ public class BeerDto {
     private int price;
     private double alcohol;
     private List<Ingredient> ingredients = new ArrayList<>();
-    private double waterIngredient;
+//    private double waterIngredient;
 }

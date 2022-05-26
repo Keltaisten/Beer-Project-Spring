@@ -42,12 +42,7 @@ public class IngredientService {
 
     public IngredientDto createIngredient(CreateIngredientCommand command) {
         Ingredient ingredient = new Ingredient(command.getName());
-//        command.getIngredients().forEach(ingredient -> ingredient.setBeer(beer));
-//        command.getIngredients().stream().map(i->i.setBeer(beer));
         repository.save(ingredient);
-//        command.getIngredients().forEach(ingredient -> ingredient.setBeerId(beer.getBeerId()));
-//        ingredientRep.saveAll(command.getIngredients());
-//        ingredientRep.save(command.getIngredients());
         log.info("Ingredient has been created");
         log.debug("Ingredient has been created with name {}", command.getName());
         return modelMapper.map(ingredient, IngredientDto.class);

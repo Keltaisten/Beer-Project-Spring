@@ -1,5 +1,6 @@
 package beerprojectspring.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,18 +14,17 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class Ingredient {
 
+
     @Id
+    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private double ratio;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "beer_object_id")
     private Beer beer;
-
-//    @JoinColumn(name = "beer_id")
-//    private Long beerId;
-
 
     public Ingredient(String name) {
         this.name = name;

@@ -8,8 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class IngredientDto {
-    private Long id;
+//    private Long id;
     private String name;
     private double ratio;
-    private Beer beer;
+//    private Beer beer;
+
 }

@@ -28,11 +28,8 @@ public class BeerIngredientService {
 
     public BeerDto createBeerWithIngredients(CreateBeerCommand command) {
         Beer beer = new Beer(command.getId(),command.getName(), command.getBrand(), command.getType(), command.getPrice(),command.getAlcohol());
-        System.out.println(beer.getBeerId());
         beerRepository.save(beer);
-        System.out.println(beer.getBeerId());
         List<Ingredient> ingredients = command.getIngredients();
-        System.out.println(ingredients);
         beer.addIngredientsFromList(command.getIngredients());
         ingredientRepository.saveAll(command.getIngredients());
         return modelMapper.map(beer,BeerDto.class);
