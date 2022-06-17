@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/beers")
@@ -23,14 +25,20 @@ public class BeerController {
     private BeerService beerService;
 
     @GetMapping
-    public List<BeerDto> getAllBeers() {
-        return beerService.getAllBeers();
+    public List<BeerDto> getAllBeers(@RequestParam Optional<String> brand, @RequestParam Optional<String> type) {
+        return beerService.getAllBeers(brand,type);
     }
 
     @GetMapping("/{id}")
     public BeerDto getBeerById(@PathVariable("id") long id) {
         return beerService.getBeerById(id);
     }
+
+    @GetMapping("/brands")
+    public Set<String> getBeerBrands(){
+        return beerService.getAllBrands();
+    }
+
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -40,19 +48,21 @@ public class BeerController {
         return beerService.createNewBeer(createBeerCommand);
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteBeerById(@PathVariable("id") long id) {
-        beerService.deleteBeerById(id);
+    @PostMapping("/{id}/ingredients")
+    public BeerDto addIngredientsById(@PathVariable("id") long id, @Valid @RequestBody List<CreateIngredientCommand> ingredientCommands) {
+        return beerService.addIngredientsById(id, ingredientCommands);
     }
+
 
     @PutMapping("/{id}")
     public BeerDto updateBeerByIdWithWebshop(@PathVariable("id") long beerId, long webshopId) {
         return beerService.updateBeerByIdWithWebshop(beerId, webshopId);
     }
 
-    @PostMapping("/{id}/ingredients")
-    public BeerDto addIngredientsById(@PathVariable("id") long id, @Valid @RequestBody List<CreateIngredientCommand> ingredientCommands) {
-        return beerService.addIngredientsById(id, ingredientCommands);
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteBeerById(@PathVariable("id") long id) {
+        beerService.deleteBeerById(id);
     }
 }

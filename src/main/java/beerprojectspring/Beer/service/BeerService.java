@@ -14,7 +14,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,21 +29,28 @@ public class BeerService {
     private BeerRepository beerRepository;
     private ModelMapper modelMapper;
 
-    public List<BeerDto> getAllBeers() {
-        List<Beer> beers = beerRepository.findAll();
+    public List<BeerDto> getAllBeers(Optional<String> brand, Optional<String> type) {
+//        List<Beer> beers = beerRepository.findAll();
+        List<Beer> beers = beerRepository.findBeersByBrandAndType(brand,type);
         return beers.stream()
                 .map(beer -> modelMapper.map(beer, BeerDto.class))
                 .collect(Collectors.toList());
     }
 
     public BeerDto createNewBeer(CreateBeerCommand createBeerCommand) {
+        List<Ingredient> ingredients = new ArrayList<>();
+        if (!createBeerCommand.getIngredients().isEmpty()) {
+            ingredients = createBeerCommand.getIngredients().stream()
+                    .map(i -> modelMapper.map(i, Ingredient.class))
+                    .collect(Collectors.toList());
+        }
         Beer beer = new Beer(
                 createBeerCommand.getName(),
                 createBeerCommand.getBrand(),
                 createBeerCommand.getType(),
                 createBeerCommand.getPrice(),
                 createBeerCommand.getAlcohol()
-//                ,createBeerCommand.getIngredients()
+                , ingredients
         );
         log.info("Beer has been created");
         log.debug("Beer has been created with name {}", createBeerCommand.getName());
@@ -74,5 +84,9 @@ public class BeerService {
                 .map(i -> modelMapper.map(i, Ingredient.class))
                 .forEach(beer::addIngredients);
         return modelMapper.map(beer, BeerDto.class);
+    }
+
+    public Set<String> getAllBrands() {
+        return beerRepository.getAllBrands();
     }
 }

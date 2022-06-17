@@ -26,8 +26,30 @@ Content-Type: application/json
   "name": "Beer Sans Corn",
   "brand": "Beer Sans Brewery",
   "type": "Corn",
-  "price": "600",
-  "alcohol": "0.2"
+  "price": 600,
+  "alcohol": 0.2,
+    "ingredients": [
+      {
+        "name": "salt",
+        "ratio": "0.004"
+      },
+      {
+        "name": "sugar",
+        "ratio": "0.027"
+      },
+      {
+        "name": "barley",
+        "ratio": "0"
+      },
+      {
+        "name": "wheat",
+        "ratio": "0"
+      },
+      {
+        "name": "corn",
+        "ratio": "0.221"
+      }
+    ]
 }
 
 

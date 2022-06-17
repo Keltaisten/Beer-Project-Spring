@@ -28,4 +28,6 @@ public class WebshopController {
     public WebshopDto createWebshop(@RequestBody CreateWebshopCommand createWebshopCommand) {
         return webshopService.createWebshop(createWebshopCommand);
     }
+
+
 }

@@ -1,13 +1,17 @@
 package beerprojectspring.Beer.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PositiveOrZero;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class CreateIngredientCommand {
 
     @Schema(description = "name of the ingredient", example = "corn")

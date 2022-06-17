@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -27,7 +29,7 @@ public class CreateBeerCommand {
     @PositiveOrZero(message = "alcohol ratio can not be negative")
     @Schema(description = "alcohol of the beer", example = "0.129")
     private double alcohol;
-//    @Schema(description = "ingredients of the beer", example = "[]")
-//    private List<Ingredient> ingredients = new ArrayList<>();
+    @Schema(description = "ingredients of the beer", example = "[]")
+    private List<CreateIngredientCommand> ingredients = new ArrayList<>();
 //    private Webshop webshop;
 }
