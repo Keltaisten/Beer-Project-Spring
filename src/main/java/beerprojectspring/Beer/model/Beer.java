@@ -30,7 +30,7 @@ public class Beer {
 //    @Transient
 //    private double waterIngredient;
     @ManyToMany/*(fetch = FetchType.EAGER)*/
-    @JoinTable(name = "webshop_beers")
+//    @JoinTable(name = "webshop_beers")
     private List<Webshop> webshops = new ArrayList<>();
 
     public Beer(String name) {

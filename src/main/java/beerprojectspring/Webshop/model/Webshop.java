@@ -22,8 +22,8 @@ public class Webshop {
     private String name;
     @Column(name = "email_address")
     private String emailAddress;
-    @ManyToMany/*(*//*mappedBy = "webshops", *//*fetch = FetchType.EAGER)*//*(fetch = FetchType.EAGER)*/
-    @JoinTable(name = "webshop_beers")
+    @ManyToMany(mappedBy = "webshops")/*(*//*mappedBy = "webshops", *//*fetch = FetchType.EAGER)*//*(fetch = FetchType.EAGER)*/
+//    @JoinTable(name = "webshop_beers")
     private List<Beer> beers = new ArrayList<>();
 
     public Webshop(String name, String emailAddress) {

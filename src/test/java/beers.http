@@ -51,7 +51,7 @@ DELETE http://localhost:8080/api/beers/1
 
 ###
 
-POST http://localhost:8080/api/webshop/
+POST http://localhost:8080/api/webshops/
 Content-Type: application/json
 
 {

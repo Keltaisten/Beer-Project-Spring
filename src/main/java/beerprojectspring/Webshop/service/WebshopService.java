@@ -22,7 +22,7 @@ public class WebshopService {
 
     public List<WebshopDto> getWebshops(Optional<String> prefix) {
 //        List<Webshop> webshops = webshopRepository.findAllWithBeers();
-        List<Webshop> webshops = webshopRepository.findAll();
+        List<Webshop> webshops = webshopRepository.findAllWithBeers();
 //        System.out.println(webshops.get(0));
 //        System.out.println(webshops.get(1));
         return webshops.stream()
