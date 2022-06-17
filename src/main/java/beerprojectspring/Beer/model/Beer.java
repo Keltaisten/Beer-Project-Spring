@@ -27,10 +27,9 @@ public class Beer {
     private double alcohol;
     @ElementCollection
     private List<Ingredient> ingredients = new ArrayList<>();
-//    @Transient
+    //    @Transient
 //    private double waterIngredient;
-    @ManyToMany/*(fetch = FetchType.EAGER)*/
-//    @JoinTable(name = "webshop_beers")
+    @ManyToMany(cascade = CascadeType.PERSIST)/*(fetch = FetchType.EAGER)*/
     private List<Webshop> webshops = new ArrayList<>();
 
     public Beer(String name) {
@@ -63,9 +62,9 @@ public class Beer {
         this.alcohol = alcohol;
     }
 
-    //    public void addWebshop(Webshop webshop) {
-//        webshops.add(webshop);
-//    }
+    public void addWebshop(Webshop webshop) {
+        webshops.add(webshop);
+    }
 
     public void addIngredients(Ingredient ingredient) {
         ingredients.add(ingredient);

@@ -1,5 +1,6 @@
 package beerprojectspring.Webshop.service;
 
+import beerprojectspring.Beer.model.Beer;
 import beerprojectspring.Webshop.dto.CreateWebshopCommand;
 import beerprojectspring.Webshop.model.Webshop;
 import beerprojectspring.Webshop.dto.WebshopDto;
@@ -8,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,27 +23,19 @@ public class WebshopService {
     private ModelMapper modelMapper;
 
     public List<WebshopDto> getWebshops(Optional<String> prefix) {
-//        List<Webshop> webshops = webshopRepository.findAllWithBeers();
         List<Webshop> webshops = webshopRepository.findAllWithBeers();
-//        System.out.println(webshops.get(0));
-//        System.out.println(webshops.get(1));
         return webshops.stream()
                 .map(shop -> modelMapper.map(shop, WebshopDto.class))
-//                .map(shop-> new WebshopDto(shop.getName(), shop.getEmailAddress(),
-//                        shop.getBeers().stream()
-//                                .map(beer->modelMapper.map(beer, BeerWebshopDto.class))
-//                                .collect(Collectors.toList())))
-//                .map(shop-> new WebshopDto(shop.getName(), shop.getEmailAddress(),
-//                        shop.getBeers().stream()
-//                                .map(Beer::getName)
-//                                .collect(Collectors.toList())))
                 .collect(Collectors.toList());
     }
 
     public WebshopDto createWebshop(CreateWebshopCommand command) {
+        List<Beer> beers = command.getBeers().stream().map(b -> modelMapper.map(b, Beer.class)).collect(Collectors.toList());
         Webshop webshop = new Webshop(
                 command.getName(),
-                command.getEmailAddress());
+                command.getEmailAddress(),
+                beers);
+        beers.forEach(b -> b.addWebshop(webshop));
         webshopRepository.save(webshop);
         return modelMapper.map(webshop, WebshopDto.class);
     }

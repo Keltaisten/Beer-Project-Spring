@@ -4,7 +4,6 @@ import beerprojectspring.Beer.dto.CreateIngredientCommand;
 import beerprojectspring.Beer.exception.BeerNotFoundException;
 import beerprojectspring.Beer.model.Beer;
 import beerprojectspring.Beer.dto.BeerDto;
-//import beerprojectspring.Beer.repository.BeerRepository;
 import beerprojectspring.Beer.dto.CreateBeerCommand;
 import beerprojectspring.Beer.model.Ingredient;
 import beerprojectspring.Beer.repository.BeerRepository;
@@ -52,15 +51,15 @@ public class BeerService {
     public void deleteBeerById(long id) {
         try {
             beerRepository.deleteById(id);
-        }catch (EmptyResultDataAccessException erdae){
+        } catch (EmptyResultDataAccessException erdae) {
             throw new BeerNotFoundException(id);
         }
     }
 
     public BeerDto getBeerById(long id) {
-            return modelMapper.map(beerRepository.findById(id)
-                            .orElseThrow(() -> new BeerNotFoundException(id)),
-                    BeerDto.class);
+        return modelMapper.map(beerRepository.findById(id)
+                        .orElseThrow(() -> new BeerNotFoundException(id)),
+                BeerDto.class);
     }
 
     public BeerDto updateBeerByIdWithWebshop(long beerId, long webshopId) {
@@ -72,9 +71,8 @@ public class BeerService {
     public BeerDto addIngredientsById(long id, List<CreateIngredientCommand> ingredientCommands) {
         Beer beer = beerRepository.findById(id).orElseThrow(() -> new BeerNotFoundException(id));
         ingredientCommands.stream()
-                        .map(i->modelMapper.map(i, Ingredient.class))
-                                .forEach(beer::addIngredients);
-//        beer.addIngredients(ingredientCommands.get(0));
-        return modelMapper.map(beer,BeerDto.class);
+                .map(i -> modelMapper.map(i, Ingredient.class))
+                .forEach(beer::addIngredients);
+        return modelMapper.map(beer, BeerDto.class);
     }
 }

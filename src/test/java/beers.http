@@ -56,7 +56,23 @@ Content-Type: application/json
 
 {
   "name": "Cool Beers",
-  "emailAddress": "john.doe@gmail.com"
+  "emailAddress": "john.doe@gmail.com",
+  "beers": [
+    {
+      "name": "qwe",
+      "brand": "Beer Sans Brewery",
+      "type": "Corn",
+      "price": "600",
+      "alcohol": "0.2"
+    },
+    {
+      "name": "asd",
+      "brand": "Beer Sans Brewery",
+      "type": "Corn",
+      "price": "700",
+      "alcohol": "0.3"
+    }
+  ]
 }
 
 ###

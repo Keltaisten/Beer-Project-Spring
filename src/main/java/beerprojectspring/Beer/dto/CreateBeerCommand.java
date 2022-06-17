@@ -23,7 +23,7 @@ public class CreateBeerCommand {
     @Max(value = 10_000, message = "price can not be more than 10_000")
     @Schema(description = "price of the beer", example = "910")
     private int price;
-    @DecimalMax(value = "0.8",message = "alcohol can not be more than 0.8")
+    @DecimalMax(value = "0.8", message = "alcohol can not be more than 0.8")
     @PositiveOrZero(message = "alcohol ratio can not be negative")
     @Schema(description = "alcohol of the beer", example = "0.129")
     private double alcohol;

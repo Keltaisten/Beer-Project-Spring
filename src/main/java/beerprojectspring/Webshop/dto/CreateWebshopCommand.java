@@ -1,5 +1,6 @@
 package beerprojectspring.Webshop.dto;
 
+import beerprojectspring.Beer.dto.CreateBeerCommand;
 import beerprojectspring.Beer.model.Beer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -18,5 +19,5 @@ public class CreateWebshopCommand {
     @Schema(description = "e-mail address", example = "john.doe1700@gmail.com")
     private String emailAddress;
     @Schema(description = "list of the selling beers")
-    private List<Beer> beers = new ArrayList<>();
+    private List<CreateBeerCommand> beers = new ArrayList<>();
 }

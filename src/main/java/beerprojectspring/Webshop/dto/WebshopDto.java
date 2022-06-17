@@ -14,7 +14,7 @@ import java.util.List;
 public class WebshopDto {
     private String name;
     private String emailAddress;
-    @JsonIgnore
-    private List<BeerWebshopDto> beers = new ArrayList<>();
-//    private List<String> beerName = new ArrayList<>();
+    //    @JsonIgnore
+//    private List<BeerWebshopDto> beers = new ArrayList<>();
+    private List<String> beerName = new ArrayList<>();
 }

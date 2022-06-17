@@ -10,6 +10,6 @@ public class BeerNotFoundException extends AbstractThrowableProblem {
         super(URI.create("beer/beer-not-found"),
                 "Beer not found",
                 Status.NOT_FOUND,
-                String.format("Beer not found with id: %d",id));
+                String.format("Beer not found with id: %d", id));
     }
 }

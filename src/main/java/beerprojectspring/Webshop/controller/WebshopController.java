@@ -18,7 +18,6 @@ import java.util.Optional;
 public class WebshopController {
 
     private WebshopService webshopService;
-//    private IngredientService iService;
 
     @GetMapping
     public List<WebshopDto> listWebshops(@RequestParam Optional<String> prefix) {
@@ -29,6 +28,4 @@ public class WebshopController {
     public WebshopDto createWebshop(@RequestBody CreateWebshopCommand createWebshopCommand) {
         return webshopService.createWebshop(createWebshopCommand);
     }
-
-
 }

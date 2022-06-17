@@ -28,7 +28,7 @@ public class BeerController {
     }
 
     @GetMapping("/{id}")
-    public BeerDto getBeerById(@PathVariable("id") long id){
+    public BeerDto getBeerById(@PathVariable("id") long id) {
         return beerService.getBeerById(id);
     }
 
@@ -47,12 +47,12 @@ public class BeerController {
     }
 
     @PutMapping("/{id}")
-    public BeerDto updateBeerByIdWithWebshop(@PathVariable("id") long beerId, long webshopId){
+    public BeerDto updateBeerByIdWithWebshop(@PathVariable("id") long beerId, long webshopId) {
         return beerService.updateBeerByIdWithWebshop(beerId, webshopId);
     }
 
     @PostMapping("/{id}/ingredients")
-    public BeerDto addIngredientsById(@PathVariable("id") long id, @Valid @RequestBody List<CreateIngredientCommand> ingredientCommands){
+    public BeerDto addIngredientsById(@PathVariable("id") long id, @Valid @RequestBody List<CreateIngredientCommand> ingredientCommands) {
         return beerService.addIngredientsById(id, ingredientCommands);
     }
 }
