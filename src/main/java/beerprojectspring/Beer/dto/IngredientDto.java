@@ -1,4 +1,4 @@
-package beerprojectspring.model;
+package beerprojectspring.Beer.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,9 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class IngredientDto {
-//    private Long id;
+
     private String name;
     private double ratio;
-//    private Beer beer;
 
 }

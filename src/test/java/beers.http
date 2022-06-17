@@ -10,34 +10,12 @@ POST http://localhost:8080/api/beers/
 Content-Type: application/json
 
 {
-  "id": "bsc-1",
   "name": "Beer Sans Corn",
   "brand": "Beer Sans Brewery",
   "type": "Corn",
   "price": "910",
-  "alcohol": "0.129",
-  "ingredients": [
-    {
-      "name": "salt",
-      "ratio": "0.004"
-    },
-    {
-      "name": "sugar",
-      "ratio": "0.027"
-    },
-    {
-      "name": "barley",
-      "ratio": "0"
-    },
-    {
-      "name": "wheat",
-      "ratio": "0"
-    },
-    {
-      "name": "corn",
-      "ratio": "0.221"
-    }
-  ]
+  "alcohol": "0.129"
+
 }
 
 ###
@@ -45,34 +23,11 @@ POST http://localhost:8080/api/beers/
 Content-Type: application/json
 
 {
-  "id": "bsc-1",
   "name": "Beer Sans Corn",
   "brand": "Beer Sans Brewery",
   "type": "Corn",
   "price": "600",
-  "alcohol": "0.2",
-  "ingredients": [
-    {
-      "name": "salt",
-      "ratio": "0.004"
-    },
-    {
-      "name": "sugar",
-      "ratio": "0.027"
-    },
-    {
-      "name": "barley",
-      "ratio": "0"
-    },
-    {
-      "name": "wheat",
-      "ratio": "0"
-    },
-    {
-      "name": "corn",
-      "ratio": "0.221"
-    }
-  ]
+  "alcohol": "0.2"
 }
 
 
@@ -82,7 +37,7 @@ Accept: application/json
 
 ###
 
-GET http://localhost:8080/api/beers/1
+GET http://localhost:8080/api/beers/2
 Accept: application/json
 
 ###
@@ -91,3 +46,58 @@ GET http://localhost:8080/api/ingredients/
 Accept: application/json
 
 ###
+
+DELETE http://localhost:8080/api/beers/1
+
+###
+
+POST http://localhost:8080/api/webshop/
+Content-Type: application/json
+
+{
+  "name": "Cool Beers",
+  "emailAddress": "john.doe@gmail.com"
+}
+
+###
+
+POST http://localhost:8080/api/webshops/
+Content-Type: application/json
+
+{
+  "name": "Cool Beers",
+  "emailAddress": "john.doegmailcom"
+}
+
+###
+
+GET http://localhost:8080/api/webshops/
+Accept: application/json
+
+###
+
+POST http://localhost:8080/api/beers/2/ingredients
+Content-Type: application/json
+
+  [
+    {
+      "name": "salt",
+      "ratio": "0.004"
+    },
+    {
+      "name": "sugar",
+      "ratio": "0.027"
+    },
+    {
+      "name": "barley",
+      "ratio": "0"
+    },
+    {
+      "name": "wheat",
+      "ratio": "0"
+    },
+    {
+      "name": "corn",
+      "ratio": "0.221"
+    }
+  ]

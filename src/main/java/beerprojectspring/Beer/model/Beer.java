@@ -1,6 +1,6 @@
-package beerprojectspring.model;
+package beerprojectspring.Beer.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import beerprojectspring.Webshop.model.Webshop;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,28 +18,26 @@ public class Beer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "beer_id")
-    private Long beerId;
-    private String id;
+    private Long id;
     @Column(name = "beer_name")
     private String name;
     private String brand;
     private String type;
     private int price;
     private double alcohol;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "beer")
+    @ElementCollection
     private List<Ingredient> ingredients = new ArrayList<>();
 //    @Transient
 //    private double waterIngredient;
+    @ManyToMany/*(fetch = FetchType.EAGER)*/
+    @JoinTable(name = "webshop_beers")
+    private List<Webshop> webshops = new ArrayList<>();
 
     public Beer(String name) {
         this.name = name;
     }
 
-    public Beer(String id, String name, String brand, String type, int price, double alcohol) {
-        this.id = id;
+    public Beer(String name, String brand, String type, int price, double alcohol) {
         this.name = name;
         this.brand = brand;
         this.type = type;
@@ -47,8 +45,7 @@ public class Beer {
         this.alcohol = alcohol;
     }
 
-    public Beer(String id, String name, String brand, String type, int price, double alcohol, List<Ingredient> ingredients) {
-        this.id = id;
+    public Beer(String name, String brand, String type, int price, double alcohol, List<Ingredient> ingredients) {
         this.name = name;
         this.brand = brand;
         this.type = type;
@@ -57,13 +54,21 @@ public class Beer {
         this.ingredients = ingredients;
     }
 
-    public void addIngredients(Ingredient ingredient) {
-        ingredients.add(ingredient);
-        ingredient.setBeer(this);
+    public Beer(Long id, String name, String brand, String type, int price, double alcohol) {
+        this.id = id;
+        this.name = name;
+        this.brand = brand;
+        this.type = type;
+        this.price = price;
+        this.alcohol = alcohol;
     }
 
-    public void addIngredientsFromList(List<Ingredient> ingr) {
-        ingr.forEach(i->i.setBeer(this));
-        ingredients.addAll(ingr);
+    //    public void addWebshop(Webshop webshop) {
+//        webshops.add(webshop);
+//    }
+
+    public void addIngredients(Ingredient ingredient) {
+        ingredients.add(ingredient);
+//        ingredient.setBeer(this);
     }
 }
