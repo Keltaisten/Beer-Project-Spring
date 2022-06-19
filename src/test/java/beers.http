@@ -59,7 +59,7 @@ Accept: application/json
 
 ###
 
-GET http://localhost:8080/api/beers/2
+GET http://localhost:8080/api/beers/122
 Accept: application/json
 
 ###
@@ -103,7 +103,7 @@ POST http://localhost:8080/api/webshops/
 Content-Type: application/json
 
 {
-  "name": "Cool Beers",
+  "name": "Bad Beers",
   "emailAddress": "john.doegmailcom"
 }
 
@@ -139,3 +139,11 @@ Content-Type: application/json
       "ratio": "0.221"
     }
   ]
+
+
+###
+
+PUT http://localhost:8080/api/beers/130/webshops?webshopId=60
+Content-Type: application/json
+
+###

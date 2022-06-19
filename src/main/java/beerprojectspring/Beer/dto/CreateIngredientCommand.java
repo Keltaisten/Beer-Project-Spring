@@ -18,6 +18,6 @@ public class CreateIngredientCommand {
     @NotBlank(message = "name can not be blank")
     private String name;
     @PositiveOrZero
-    @DecimalMax(value = "0.1", message = "ratio can not be more than 0.1")
+    @DecimalMax(value = "0.3", message = "ratio can not be more than 0.3")
     private double ratio;
 }

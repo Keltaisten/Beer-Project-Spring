@@ -3,7 +3,9 @@ package beerprojectspring.Beer.controller;
 import beerprojectspring.Beer.dto.BeerDto;
 import beerprojectspring.Beer.dto.CreateBeerCommand;
 import beerprojectspring.Beer.dto.CreateIngredientCommand;
-import beerprojectspring.Beer.service.BeerService;
+import beerprojectspring.Beer.dto.IngredientDto;
+import beerprojectspring.service.BeerWebshopService;
+import beerprojectspring.Webshop.dto.CreateWebshopCommand;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,7 +24,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class BeerController {
 
-    private BeerService beerService;
+    private BeerWebshopService beerService;
 
     @GetMapping
     public List<BeerDto> getAllBeers(@RequestParam Optional<String> brand, @RequestParam Optional<String> type) {
@@ -39,6 +41,11 @@ public class BeerController {
         return beerService.getAllBrands();
     }
 
+    @GetMapping("/{id}/ingredients")
+    public List<IngredientDto> getIngredientsByBeerId(@PathVariable("id") long id){
+        return beerService.getIngredientsByBeerId(id);
+    }
+
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -48,14 +55,24 @@ public class BeerController {
         return beerService.createNewBeer(createBeerCommand);
     }
 
+//    @PostMapping("/{id}/ingredients")
+//    public BeerDto addIngredientsById(@PathVariable("id") long id, @Valid @RequestBody List<CreateIngredientCommand> ingredientCommands) {
+//        return beerService.addIngredientsById(id, ingredientCommands);
+//    }
+
     @PostMapping("/{id}/ingredients")
-    public BeerDto addIngredientsById(@PathVariable("id") long id, @Valid @RequestBody List<CreateIngredientCommand> ingredientCommands) {
-        return beerService.addIngredientsById(id, ingredientCommands);
+    public BeerDto addOneIngredientById(@PathVariable("id") long id, @Valid @RequestBody CreateIngredientCommand ingredientCommands) {
+        return beerService.addOneIngredientsById(id, ingredientCommands);
     }
 
+//    @PostMapping("/{id}/webshops")
+//    public BeerDto addWebshopToBeerById(@PathVariable("id") long beerId, CreateWebshopCommand command) {
+//        return beerService.addWebshopToBeerById(beerId, command);
+//    }
 
-    @PutMapping("/{id}")
-    public BeerDto updateBeerByIdWithWebshop(@PathVariable("id") long beerId, long webshopId) {
+
+    @PutMapping("/{id}/webshops")
+    public BeerDto updateBeerByIdWithWebshop(@PathVariable("id") long beerId,@RequestParam long webshopId) {
         return beerService.updateBeerByIdWithWebshop(beerId, webshopId);
     }
 

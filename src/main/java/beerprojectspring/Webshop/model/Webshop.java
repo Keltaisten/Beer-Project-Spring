@@ -35,4 +35,8 @@ public class Webshop {
         this.emailAddress = emailAddress;
         this.beers = beers;
     }
+
+    public void addBeer(Beer beer){
+        beers.add(beer);
+    }
 }

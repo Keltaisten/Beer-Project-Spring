@@ -1,5 +1,6 @@
 package beerprojectspring.Webshop.dto;
 
+import beerprojectspring.Beer.dto.BeerDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -12,9 +13,11 @@ import java.util.Objects;
 @Getter
 @Setter
 public class WebshopDto {
+    private long id;
     private String name;
     private String emailAddress;
-    private List<String> beerNames = new ArrayList<>();
+    @JsonIgnore
+    private List<BeerDto> beers = new ArrayList<>();
 
     public WebshopDto(String name, String emailAddress) {
         this.name = name;
