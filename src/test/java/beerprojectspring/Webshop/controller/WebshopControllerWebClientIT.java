@@ -1,5 +1,6 @@
 package beerprojectspring.Webshop.controller;
 
+import beerprojectspring.Beer.dto.BeerDto;
 import beerprojectspring.Beer.dto.CreateBeerCommand;
 import beerprojectspring.Beer.dto.CreateIngredientCommand;
 import beerprojectspring.Webshop.dto.CreateWebshopCommand;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.zalando.problem.Problem;
 
 import java.util.Arrays;
 
@@ -17,19 +19,38 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(statements = {"delete from beers_webshops","delete from beer_ingredients","delete from beers","delete from webshops"})
+@Sql(statements = {"delete from beers_webshops", "delete from beer_ingredients", "delete from beers", "delete from webshops"})
 class WebshopControllerWebClientIT {
 
     @Autowired
     WebTestClient webTestClient;
 
+    BeerDto beerDto;
     WebshopDto webshopDto;
 
     @BeforeEach
     void init() {
+        beerDto = webTestClient.post()
+                .uri("api/beers")
+                .bodyValue(new CreateBeerCommand(
+                        "Beer Sans Wheat",
+                        "Beer Sans Brewery",
+                        "Wheat",
+                        910,
+                        0.129,
+                        Arrays.asList(
+                                new CreateIngredientCommand("salt", 0.004),
+                                new CreateIngredientCommand("sugar", 0.027),
+                                new CreateIngredientCommand("barley", 0),
+                                new CreateIngredientCommand("wheat", 0),
+                                new CreateIngredientCommand("corn", 0.221)
+                        )))
+                .exchange()
+                .expectBody(BeerDto.class)
+                .returnResult().getResponseBody();
+
         webshopDto = webTestClient.post()
                 .uri("api/webshops")
-//                .bodyValue(new CreateWebshopCommand())
                 .bodyValue(new CreateWebshopCommand("Cool Beers", "john.doe@gmail.com",
                         Arrays.asList(
                                 new CreateBeerCommand(
@@ -55,7 +76,6 @@ class WebshopControllerWebClientIT {
     void testCreateWebshop() {
         WebshopDto actual = webTestClient.post()
                 .uri("api/webshops")
-//                .bodyValue(new CreateWebshopCommand())
                 .bodyValue(new CreateWebshopCommand("Awesome Beers", "jane.doe@gmail.com",
                         Arrays.asList(
                                 new CreateBeerCommand(
@@ -79,10 +99,9 @@ class WebshopControllerWebClientIT {
     }
 
     @Test
-    void getAllWebshops(){
+    void testGetAllWebshops() {
         webTestClient.post()
                 .uri("api/webshops")
-//                .bodyValue(new CreateWebshopCommand())
                 .bodyValue(new CreateWebshopCommand("Long Beers", "jane.doe@gmail.com",
                         Arrays.asList(
                                 new CreateBeerCommand(
@@ -91,13 +110,7 @@ class WebshopControllerWebClientIT {
                                         "Corn",
                                         910,
                                         0.129,
-                                        Arrays.asList(
-//                                                new CreateIngredientCommand("salt", 0.004),
-//                                                new CreateIngredientCommand("sugar", 0.027),
-//                                                new CreateIngredientCommand("barley", 0),
-//                                                new CreateIngredientCommand("wheat", 0),
-//                                                new CreateIngredientCommand("corn", 0.221)
-                                        ))
+                                        Arrays.asList())
                         )))
                 .exchange();
         webTestClient.get()
@@ -105,6 +118,58 @@ class WebshopControllerWebClientIT {
                 .exchange()
                 .expectBodyList(WebshopDto.class)
                 .hasSize(2)
-                .contains(new WebshopDto("Cool Beers","john.doe@gmail.com"));
+                .contains(new WebshopDto("Cool Beers", "john.doe@gmail.com"));
+    }
+
+    @Test
+    void testDeleteWebshopByIdButNoFound() {
+        Problem p = webTestClient.delete()
+                .uri(uriBuilder -> uriBuilder.path("api/webshops/{id}").build(10))
+                .exchange()
+                .expectBody(Problem.class)
+                .returnResult().getResponseBody();
+        assertEquals("Webshop not found with id: 10", p.getDetail());
+    }
+
+    @Test
+    void updateWebshopWithBeerById() {
+        webTestClient.put()
+                .uri(uriBuilder -> uriBuilder.path("api/webshops/{id}/beers").queryParam("beerId", beerDto.getId()).build(webshopDto.getId()))
+                .exchange();
+
+        BeerDto actual = webTestClient.get()
+                .uri(uriBuilder -> uriBuilder.path("api/beers/{id}").build(beerDto.getId()))
+                .exchange()
+                .expectBody(BeerDto.class)
+                .returnResult().getResponseBody();
+        assertEquals(1, actual.getWebshops().size());
+        assertThat(actual).extracting(BeerDto::getWebshops).asList().containsExactly(webshopDto);
+    }
+
+    @Test
+    void testRemoveBeerFromWebshopById() {
+        webTestClient.put()
+                .uri(uriBuilder -> uriBuilder.path("api/webshops/{id}/beers").queryParam("beerId", beerDto.getId()).build(webshopDto.getId()))
+                .exchange();
+        webTestClient.put()
+                .uri(uriBuilder -> uriBuilder.path("/api/webshops/{id}/beers/{beerId}").build(webshopDto.getId(), beerDto.getId()))
+                .exchange();
+
+        BeerDto actualBeerDto = webTestClient.get()
+                .uri(uriBuilder -> uriBuilder.path("api/beers/{id}").build(beerDto.getId()))
+                .exchange()
+                .expectBody(BeerDto.class)
+                .returnResult().getResponseBody();
+        assertEquals(0, actualBeerDto.getWebshops().size());
+        assertThat(actualBeerDto).extracting(BeerDto::getWebshops).asList().doesNotContain(webshopDto);
+    }
+
+    @Test
+    void testDeleteWebshopById() {
+        webTestClient.delete()
+                .uri(uriBuilder -> uriBuilder.path("/api/webshops/{id}").build(webshopDto.getId()))
+                .exchange()
+                .expectStatus()
+                .isNoContent();
     }
 }

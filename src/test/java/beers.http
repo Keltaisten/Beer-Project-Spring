@@ -69,7 +69,12 @@ Accept: application/json
 
 ###
 
-DELETE http://localhost:8080/api/beers/1
+GET http://localhost:8080/api/beers/38/ingredients/
+Accept: application/json
+
+###
+
+DELETE http://localhost:8080/api/beers/347
 
 ###
 
@@ -143,7 +148,16 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:8080/api/beers/130/webshops?webshopId=60
+PUT http://localhost:8080/api/beers/305/webshops?webshopId=151
 Content-Type: application/json
+
+###
+
+PUT http://localhost:8080/api/webshops/152/beers?beerId=306
+Content-Type: application/json
+
+###
+
+DELETE http://localhost:8080/api/webshops/177
 
 ###

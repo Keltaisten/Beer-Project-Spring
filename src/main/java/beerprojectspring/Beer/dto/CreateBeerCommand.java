@@ -31,5 +31,4 @@ public class CreateBeerCommand {
     private double alcohol;
     @Schema(description = "ingredients of the beer", example = "[]")
     private List<CreateIngredientCommand> ingredients = new ArrayList<>();
-//    private Webshop webshop;
 }

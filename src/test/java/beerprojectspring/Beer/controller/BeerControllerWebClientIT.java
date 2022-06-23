@@ -3,6 +3,7 @@ package beerprojectspring.Beer.controller;
 import beerprojectspring.Beer.dto.BeerDto;
 import beerprojectspring.Beer.dto.CreateBeerCommand;
 import beerprojectspring.Beer.dto.CreateIngredientCommand;
+import beerprojectspring.Beer.dto.IngredientDto;
 import beerprojectspring.Webshop.dto.CreateWebshopCommand;
 import beerprojectspring.Webshop.dto.WebshopDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +15,6 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import org.zalando.problem.Problem;
 import org.zalando.problem.violations.ConstraintViolationProblem;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.TreeSet;
@@ -77,27 +77,39 @@ class BeerControllerWebClientIT {
                 .getResponseBody();
     }
 
+
+
     @Test
-    void testCreateBeer() {
-        BeerDto actual = webTestClient.post()
+    void testGetAllBeers() {
+        webTestClient.post()
                 .uri("api/beers")
                 .bodyValue(new CreateBeerCommand(
                         "Beer Sans Wheat",
-                        "Beer Sans Brewery",
+                        "Beer Sans White",
                         "Wheat",
                         1500,
                         0.2,
-                        Arrays.asList(
-                                new CreateIngredientCommand("salt", 0.004),
-                                new CreateIngredientCommand("sugar", 0.027),
-                                new CreateIngredientCommand("barley", 0),
-                                new CreateIngredientCommand("wheat", 0.215),
-                                new CreateIngredientCommand("corn", 0.021)
-                        )))
+                        Arrays.asList()))
+                .exchange()
+                .expectBody(BeerDto.class);
+
+        List<BeerDto> beers = webTestClient.get()
+                .uri("api/beers")
+                .exchange()
+                .expectBodyList(BeerDto.class)
+                .returnResult().getResponseBody();
+        assertThat(beers).hasSize(3).extracting(BeerDto::getName)
+                .containsExactly("Beer Sans Corn", "Beer Sans Barley", "Beer Sans Wheat");
+    }
+
+    @Test
+    void testGetBeerById() {
+        BeerDto actual = webTestClient.get()
+                .uri(uriBuilder -> uriBuilder.path("api/beers/{id}").build(beerDto.getId()))
                 .exchange()
                 .expectBody(BeerDto.class)
                 .returnResult().getResponseBody();
-        assertThat(actual.getBrand()).isEqualTo("Beer Sans Brewery");
+        assertEquals(910, actual.getPrice());
     }
 
     @Test
@@ -122,60 +134,41 @@ class BeerControllerWebClientIT {
     }
 
     @Test
-    void testGetAllBeers() {
-        webTestClient.post()
+    void testgetIngredientsByBeerId(){
+        List<IngredientDto> ingredientDtos = webTestClient.get()
+                .uri(uriBuilder -> uriBuilder.path("api/beers/{id}/ingredients").build(beerDto.getId()))
+                .exchange()
+                .expectBodyList(IngredientDto.class)
+                .returnResult().getResponseBody();
+
+        assertThat(ingredientDtos).contains(new IngredientDto("salt", 0.004),
+                new IngredientDto("sugar", 0.027),
+                new IngredientDto("barley", 0),
+                new IngredientDto("wheat", 0),
+                new IngredientDto("corn", 0.221));
+    }
+
+    @Test
+    void testCreateBeer() {
+        BeerDto actual = webTestClient.post()
                 .uri("api/beers")
                 .bodyValue(new CreateBeerCommand(
                         "Beer Sans Wheat",
-                        "Beer Sans White",
+                        "Beer Sans Brewery",
                         "Wheat",
                         1500,
                         0.2,
-                        Arrays.asList()))
-                .exchange()
-                .expectBody(BeerDto.class);
-
-        List<BeerDto> beers = webTestClient.get()
-                .uri("api/beers")
-                .exchange()
-                .expectBodyList(BeerDto.class)
-                .returnResult().getResponseBody();
-//                .value(b->assertThat(b).hasSize(2).extracting(BeerDto::getName).containsExactly("Beer Sans Corn","Beer Sans Wheat"));
-        assertThat(beers).hasSize(3).extracting(BeerDto::getName)
-                .containsExactly("Beer Sans Corn", "Beer Sans Barley", "Beer Sans Wheat");
-    }
-
-    @Test
-    void testGetAllBeers2() {
-//        webTestClient.post()
-//                .uri("api/beers")
-//                .bodyValue(new CreateBeerCommand(
-//                        "Beer Sans Wheat",
-//                        "Beer Sans White",
-//                        "Wheat",
-//                        1500,
-//                        0.2,
-//                        Arrays.asList()))
-//                .exchange()
-//                .expectBody(BeerDto.class);
-//
-//        webTestClient.get()
-//                .uri("api/beers")
-//                .exchange()
-//                .expectBodyList(BeerDto.class)
-////                .hasSize(2)
-//                .value(b->assertThat(b).hasSize(2).extracting(BeerDto::getName).containsExactly("Beer Sans Corn","Beer Sans Wheat"));
-////        assertThat(beers).hasSize(2).extracting(BeerDto::getName).containsExactly("Beer Sans Corn", "Beer Sans Wheat");
-    }
-
-    @Test
-    void testGetBeerById() {
-        BeerDto actual = webTestClient.get()
-                .uri(uriBuilder -> uriBuilder.path("api/beers/{id}").build(beerDto.getId()))
+                        Arrays.asList(
+                                new CreateIngredientCommand("salt", 0.004),
+                                new CreateIngredientCommand("sugar", 0.027),
+                                new CreateIngredientCommand("barley", 0),
+                                new CreateIngredientCommand("wheat", 0.215),
+                                new CreateIngredientCommand("corn", 0.021)
+                        )))
                 .exchange()
                 .expectBody(BeerDto.class)
                 .returnResult().getResponseBody();
-        assertEquals(910, actual.getPrice());
+        assertThat(actual.getBrand()).isEqualTo("Beer Sans Brewery");
     }
 
     @Test
@@ -186,6 +179,32 @@ class BeerControllerWebClientIT {
                 .expectBody(Problem.class)
                 .returnResult().getResponseBody();
         assertEquals("Beer not found with id: 10", p.getDetail());
+    }
+
+    @Test
+    void testAddOneIngredientById(){
+        BeerDto newBeerDto = webTestClient.post()
+                .uri("api/beers")
+                .bodyValue(new CreateBeerCommand(
+                        "Beer Sans Wheat",
+                        "Beer Sans White",
+                        "Wheat",
+                        1500,
+                        0.2,
+                        Arrays.asList()))
+                .exchange()
+                .expectBody(BeerDto.class)
+                .returnResult().getResponseBody();
+        BeerDto updatedBeerDto = webTestClient.post()
+                .uri(uriBuilder -> uriBuilder.path("api/beers/{id}/ingredients")
+                        .build(newBeerDto.getId()))
+                .bodyValue(new CreateIngredientCommand("wheat", 0.15))
+                .exchange()
+                .expectBody(BeerDto.class)
+                .returnResult().getResponseBody();
+
+        assertEquals("wheat",updatedBeerDto.getIngredients().get(0).getName());
+        assertEquals(0.15,updatedBeerDto.getIngredients().get(0).getRatio());
     }
 
     @Test
@@ -234,6 +253,7 @@ class BeerControllerWebClientIT {
                 .exchange()
                 .expectBody(BeerDto.class)
                 .returnResult().getResponseBody();
+        assertEquals(1,actual.getWebshops().size());
         assertEquals("Cool Beers", actual.getWebshops().get(0).getName());
     }
 }

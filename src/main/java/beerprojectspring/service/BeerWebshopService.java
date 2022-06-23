@@ -34,7 +34,6 @@ public class BeerWebshopService {
     private ModelMapper modelMapper;
 
     public List<BeerDto> getAllBeers(Optional<String> brand, Optional<String> type) {
-//        List<Beer> beers = beerRepository.findAll();
         List<Beer> beers = beerRepository.findBeersByBrandAndType(brand, type);
         return beers.stream()
                 .map(beer -> modelMapper.map(beer, BeerDto.class))
@@ -88,28 +87,9 @@ public class BeerWebshopService {
         return modelMapper.map(beer, BeerDto.class);
     }
 
-    public BeerDto addIngredientsById(long id, List<CreateIngredientCommand> ingredientCommands) {
-        Beer beer = findBeerById(id);
-//        Beer beer = beerRepository.findById(id).orElseThrow(() -> new BeerNotFoundException(id));
-        ingredientCommands.stream()
-                .map(i -> modelMapper.map(i, Ingredient.class))
-                .forEach(beer::addIngredients);
-        return modelMapper.map(beer, BeerDto.class);
-    }
-
     public Set<String> getAllBrands() {
         return beerRepository.getAllBrands();
     }
-
-//    public BeerDto addWebshopToBeerById(long beerId, CreateWebshopCommand command) {
-//        Beer beer = findBeerById(beerId);
-//        Webshop webshop = new Webshop(
-//                command.getName(),
-//                command.getEmailAddress(),
-//                List.of(beer));
-//        beer.addWebshop(webshop);
-//        return modelMapper.map(beer, BeerDto.class);
-//    }
 
     public List<WebshopDto> getWebshops(Optional<String> prefix) {
         List<Webshop> webshops = webshopRepository.findAllWithBeers();
@@ -130,11 +110,14 @@ public class BeerWebshopService {
     }
 
     public void deleteWebshopById(long id) {
-        try {
-            webshopRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException erdae) {
-            throw new BeerNotFoundException(id);
-        }
+        deleteBeerAndWebshopConnections(id);
+        webshopRepository.deleteById(id);
+    }
+
+    private void deleteBeerAndWebshopConnections(long id) {
+        Webshop webshop = findWebshopById(id);
+        webshop.getBeers().forEach(b->b.removeWebshop(webshop));
+        webshop.removeAllBeers();
     }
 
     public BeerDto addOneIngredientsById(long id, CreateIngredientCommand command) {
@@ -149,7 +132,6 @@ public class BeerWebshopService {
         webshop.addBeer(beer);
         beer.addWebshop(webshop);
         return modelMapper.map(webshop, WebshopDto.class);
-
     }
 
     private Webshop findWebshopById(long id) {
@@ -158,6 +140,20 @@ public class BeerWebshopService {
     }
 
     public List<IngredientDto> getIngredientsByBeerId(long id) {
-        return null;
+        Beer beer = findBeerById(id);
+        return beer.getIngredients().stream()
+                .map(b->modelMapper.map(b,IngredientDto.class))
+                .collect(Collectors.toList());
+    }
+
+    public WebshopDto removeBeerFromWebshopById(long webshopId, long beerId) {
+        Webshop webshop = findWebshopById(webshopId);
+        Beer beer = findBeerById(beerId);
+        if (!webshop.getBeers().contains(beer)) {
+            throw new BeerNotFoundException(beerId);
+        }
+        webshop.removeBeer(beer);
+        beer.removeWebshop(webshop);
+        return modelMapper.map(webshop, WebshopDto.class);
     }
 }

@@ -30,8 +30,13 @@ public class WebshopController {
     }
 
     @PutMapping("/{id}/beers")
-    public WebshopDto updateWebshopWithBeerById(@PathVariable("id") long id, @RequestParam long beerId){
-        return service.updateWebshopWithBeerById(id,beerId);
+    public WebshopDto updateWebshopWithBeerById(@PathVariable("id") long webshopId, @RequestParam long beerId) {
+        return service.updateWebshopWithBeerById(webshopId, beerId);
+    }
+
+    @PutMapping("/{id}/beers/{beerId}")
+    public WebshopDto removeBeerFromWebshopById(@PathVariable("id") long webshopId, @PathVariable("beerId") long beerId) {
+        return service.removeBeerFromWebshopById(webshopId, beerId);
     }
 
     @DeleteMapping("/{id}")

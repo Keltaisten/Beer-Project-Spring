@@ -46,7 +46,6 @@ public class BeerController {
         return beerService.getIngredientsByBeerId(id);
     }
 
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "creates a beer")
@@ -65,17 +64,10 @@ public class BeerController {
         return beerService.addOneIngredientsById(id, ingredientCommands);
     }
 
-//    @PostMapping("/{id}/webshops")
-//    public BeerDto addWebshopToBeerById(@PathVariable("id") long beerId, CreateWebshopCommand command) {
-//        return beerService.addWebshopToBeerById(beerId, command);
-//    }
-
-
     @PutMapping("/{id}/webshops")
     public BeerDto updateBeerByIdWithWebshop(@PathVariable("id") long beerId,@RequestParam long webshopId) {
         return beerService.updateBeerByIdWithWebshop(beerId, webshopId);
     }
-
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

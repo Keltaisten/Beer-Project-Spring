@@ -27,7 +27,7 @@ public class Beer {
     private double alcohol;
     @ElementCollection
     private List<Ingredient> ingredients = new ArrayList<>();
-    @ManyToMany/*(cascade = CascadeType.PERSIST)*/
+    @ManyToMany
     private List<Webshop> webshops = new ArrayList<>();
 
     public Beer(String name) {
@@ -62,6 +62,10 @@ public class Beer {
 
     public void addWebshop(Webshop webshop) {
         webshops.add(webshop);
+    }
+
+    public void removeWebshop(Webshop webshop){
+        webshops.remove(webshop);
     }
 
     public void addIngredients(Ingredient ingredient) {

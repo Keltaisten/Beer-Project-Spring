@@ -39,4 +39,12 @@ public class Webshop {
     public void addBeer(Beer beer){
         beers.add(beer);
     }
+
+    public void removeBeer(Beer beer){
+        beers.remove(beer);
+    }
+
+    public void removeAllBeers(){
+        beers = new ArrayList<>();
+    }
 }
