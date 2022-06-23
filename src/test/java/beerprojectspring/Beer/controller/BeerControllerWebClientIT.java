@@ -56,7 +56,7 @@ class BeerControllerWebClientIT {
         webshopDto = webTestClient.post()
                 .uri("api/webshops")
                 .bodyValue(new CreateWebshopCommand("Cool Beers", "john.doe@gmail.com",
-                        Arrays.asList(
+                        List.of(
                                 new CreateBeerCommand(
                                         "Beer Sans Barley",
                                         "Beer Sans Brewery",
@@ -89,7 +89,7 @@ class BeerControllerWebClientIT {
                         "Wheat",
                         1500,
                         0.2,
-                        Arrays.asList()))
+                        List.of()))
                 .exchange()
                 .expectBody(BeerDto.class);
 
@@ -122,7 +122,7 @@ class BeerControllerWebClientIT {
                         "Wheat",
                         1500,
                         0.2,
-                        Arrays.asList()))
+                        List.of()))
                 .exchange()
                 .expectBody(BeerDto.class);
 
@@ -191,7 +191,7 @@ class BeerControllerWebClientIT {
                         "Wheat",
                         1500,
                         0.2,
-                        Arrays.asList()))
+                        List.of()))
                 .exchange()
                 .expectBody(BeerDto.class)
                 .returnResult().getResponseBody();
@@ -217,7 +217,7 @@ class BeerControllerWebClientIT {
                         "Wheat",
                         1500,
                         0.2,
-                        Arrays.asList()))
+                        List.of()))
                 .exchange()
                 .expectBody(BeerDto.class)
                 .returnResult().getResponseBody();

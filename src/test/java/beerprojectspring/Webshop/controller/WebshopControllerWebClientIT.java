@@ -14,6 +14,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import org.zalando.problem.Problem;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -52,7 +53,7 @@ class WebshopControllerWebClientIT {
         webshopDto = webTestClient.post()
                 .uri("api/webshops")
                 .bodyValue(new CreateWebshopCommand("Cool Beers", "john.doe@gmail.com",
-                        Arrays.asList(
+                        List.of(
                                 new CreateBeerCommand(
                                         "Beer Sans Corn",
                                         "Beer Sans Brewery",
@@ -77,7 +78,7 @@ class WebshopControllerWebClientIT {
         WebshopDto actual = webTestClient.post()
                 .uri("api/webshops")
                 .bodyValue(new CreateWebshopCommand("Awesome Beers", "jane.doe@gmail.com",
-                        Arrays.asList(
+                        List.of(
                                 new CreateBeerCommand(
                                         "Beer Sans Corn",
                                         "Beer Sans Brewery",
@@ -110,7 +111,7 @@ class WebshopControllerWebClientIT {
                                         "Corn",
                                         910,
                                         0.129,
-                                        Arrays.asList())
+                                        List.of())
                         )))
                 .exchange();
         webTestClient.get()

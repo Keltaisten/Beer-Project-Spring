@@ -1,7 +1,6 @@
 package beerprojectspring.Beer.dto;
 
 import beerprojectspring.Webshop.dto.WebshopDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -20,16 +19,7 @@ public class BeerDto {
     private int price;
     private double alcohol;
     private List<IngredientDto> ingredients = new ArrayList<>();
-//    @JsonIgnore
     private List<WebshopDto> webshops = new ArrayList<>();
-
-    public BeerDto(String name, String brand, String type, int price, double alcohol) {
-        this.name = name;
-        this.brand = brand;
-        this.type = type;
-        this.price = price;
-        this.alcohol = alcohol;
-    }
 
     @Override
     public boolean equals(Object o) {

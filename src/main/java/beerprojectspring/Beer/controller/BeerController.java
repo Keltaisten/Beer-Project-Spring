@@ -5,7 +5,6 @@ import beerprojectspring.Beer.dto.CreateBeerCommand;
 import beerprojectspring.Beer.dto.CreateIngredientCommand;
 import beerprojectspring.Beer.dto.IngredientDto;
 import beerprojectspring.service.BeerWebshopService;
-import beerprojectspring.Webshop.dto.CreateWebshopCommand;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -53,11 +52,6 @@ public class BeerController {
     public BeerDto createNewBeer(@Valid @RequestBody CreateBeerCommand createBeerCommand) {
         return beerService.createNewBeer(createBeerCommand);
     }
-
-//    @PostMapping("/{id}/ingredients")
-//    public BeerDto addIngredientsById(@PathVariable("id") long id, @Valid @RequestBody List<CreateIngredientCommand> ingredientCommands) {
-//        return beerService.addIngredientsById(id, ingredientCommands);
-//    }
 
     @PostMapping("/{id}/ingredients")
     public BeerDto addOneIngredientById(@PathVariable("id") long id, @Valid @RequestBody CreateIngredientCommand ingredientCommands) {

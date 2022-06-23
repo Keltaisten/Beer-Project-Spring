@@ -1,9 +1,7 @@
 package beerprojectspring.Beer.model;
 
 import beerprojectspring.Webshop.model.Webshop;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,7 +9,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "beers")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Beer {
